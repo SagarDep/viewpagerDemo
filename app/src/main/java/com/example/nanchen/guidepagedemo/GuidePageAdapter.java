@@ -23,7 +23,9 @@ public class GuidePageAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         if (viewList != null){
-            return viewList.size();
+//            return viewList.size();
+            //第一处修改，设置轮播最大值，等于无限循环
+            return Integer.MAX_VALUE;
         }
         return 0;
     }
@@ -47,13 +49,24 @@ public class GuidePageAdapter extends PagerAdapter {
      */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(viewList.get(position));
-        return viewList.get(position);
+
+        //第二处修改，当前要显示的数据索引为集合长度
+        int newPosition = position % viewList.size();
+        container.addView(viewList.get(newPosition));
+        return viewList.get(newPosition);
+
+//        container.addView(viewList.get(position));
+//        return viewList.get(position);
     }
 
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(viewList.get(position));
+
+        //第三处修改，移除的索引为集合的长度
+        int newPosition = position % viewList.size();
+        container.removeView(viewList.get(newPosition));
+
+//        container.removeView(viewList.get(position));
     }
 }

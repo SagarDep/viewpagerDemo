@@ -30,6 +30,13 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
 
     private boolean isLooper;
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isLooper = false;
+    }
+
     //最后一页的按钮
     private ImageButton ib_start;
     @Override
@@ -153,21 +160,36 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
      */
     @Override
     public void onPageSelected(int position) {
+        //修改全部的position长度
+        int newPosition = position % viewList.size();
+
         //循环设置当前页的标记图
         int length = imageIdArray.length;
         for (int i = 0;i<length;i++){
-            ivPointArray[position].setBackgroundResource(R.mipmap.full_holo);
-            if (position != i){
+            ivPointArray[newPosition].setBackgroundResource(R.mipmap.full_holo);
+            if (newPosition != i){
                 ivPointArray[i].setBackgroundResource(R.mipmap.empty_holo);
             }
         }
 
-        //判断是否是最后一页，若是则显示按钮
-        if (position == imageIdArray.length - 1){
-            ib_start.setVisibility(View.VISIBLE);
-        }else {
-            ib_start.setVisibility(View.GONE);
-        }
+
+        // 下面代码是不用自动轮播
+
+//        //循环设置当前页的标记图
+//        int length = imageIdArray.length;
+//        for (int i = 0;i<length;i++){
+//            ivPointArray[position].setBackgroundResource(R.mipmap.full_holo);
+//            if (position != i){
+//                ivPointArray[i].setBackgroundResource(R.mipmap.empty_holo);
+//            }
+//        }
+//
+//        //判断是否是最后一页，若是则显示按钮
+//        if (position == imageIdArray.length - 1){
+//            ib_start.setVisibility(View.VISIBLE);
+//        }else {
+//            ib_start.setVisibility(View.GONE);
+//        }
     }
 
 
