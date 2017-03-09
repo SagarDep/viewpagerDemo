@@ -28,6 +28,8 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
     private ImageView iv_point;
     private ImageView []ivPointArray;
 
+    private boolean isLooper;
+
     //最后一页的按钮
     private ImageButton ib_start;
     @Override
@@ -50,7 +52,35 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
 
         //加载底部圆点
         initPoint();
+
+        //修改添加设置ViewPager的当前页，为了保证左右轮播
+        vp.setCurrentItem(0);
+
+
+        //开启一个线程，用于循环
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                isLooper = true;
+                while (isLooper){
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //这里是设置当前页的下一页
+                            vp.setCurrentItem(vp.getCurrentItem() + 1);
+                        }
+                    });
+                }
+            }
+        }).start();
     }
+
 
     /**
      * 加载底部圆点
